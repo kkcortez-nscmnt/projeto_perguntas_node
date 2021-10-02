@@ -1,4 +1,14 @@
 const express = require("express")
+const connection = require("./database/database")
+
+connection
+    .authenticate()
+    .then(()=>{
+        console.log("Conexão com banco de dados realizada com sucesso!")
+    })
+    .catch((msgErro) =>{
+        console.log(msgErro)
+    })
 
 app = express()
 app.set('view engine', 'ejs')

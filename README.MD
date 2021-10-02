@@ -5,4 +5,4 @@ Projeto de aplicação web com finalidade de testar os conhecimento das ferramen
 
 --------------------------------------------
 
-A applicação utiliza express para criação de um servidor http. git
+A applicação utiliza express para criação de um servidor http.
