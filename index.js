@@ -1,5 +1,7 @@
 const express = require("express")
 const connection = require("./database/database")
+const perguntaModel = require("./database/Pergunta")
+const app = express()
 
 connection
     .authenticate()
@@ -10,7 +12,6 @@ connection
         console.log(msgErro)
     })
 
-app = express()
 app.set('view engine', 'ejs')
 app.use((express.static('public')))
 app.use(express.urlencoded({extended:true})) // traduz os dados de um formulário recebido  para uma estrutura js
