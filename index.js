@@ -1,6 +1,6 @@
 const express = require("express")
 const connection = require("./database/database")
-const perguntaModel = require("./database/Pergunta")
+const Pergunta = require("./database/Pergunta")
 const app = express()
 
 connection
@@ -19,7 +19,12 @@ app.use(express.json()) // ler dados de formulários enviados via json.
 
 
 app.get("/", (req, res)=>{
-    res.render("index")
+    Pergunta.findAll({ raw: true}).then(perguntas =>{
+        
+        res.render("index",{
+            perguntas: perguntas // foi criado um json. Váriaveis dentro do HTML
+        })
+    })
 })
 
 app.get("/perguntar",(req, res)=>{
@@ -27,11 +32,17 @@ app.get("/perguntar",(req, res)=>{
 })
 
 app.post("/salvarpergunta", (req, res)=>{
+    // Reecebe os dados do formulário
     var titulo =req.body.titulo
     var descricao =req.body.descricao
-
-    res.send("Formulário recebido! titulo: "  + titulo + " " + " descricao: " + descricao)
-
+    // Salva os dados na tabela dos bancos de dados
+    Pergunta.create({ // equivalente a CREATE INTO
+        titulo : titulo,
+        descricao: descricao
+    }).then(()=>{
+        res.redirect("/")
+    })
 })
+
 app.listen(666)
 
