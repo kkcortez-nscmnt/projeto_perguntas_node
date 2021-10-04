@@ -1,6 +1,7 @@
 const express = require("express")
 const connection = require("./database/database")
 const Pergunta = require("./database/Pergunta")
+const Resposta = require("./database/Resposta")
 const app = express()
 
 connection
@@ -41,6 +42,22 @@ app.post("/salvarpergunta", (req, res)=>{
         descricao: descricao
     }).then(()=>{
         res.redirect("/")
+    })
+})
+
+app.get("/pergunta/:id", (req, res) =>{
+    var id = req.params.id 
+    Pergunta.findOne({
+        where:{ id: id}
+    }).then(pergunta =>{
+        if(pergunta != undefined){
+            res.render("pergunta", {
+                pergunta: pergunta
+            })
+        }else{
+            res.redirect("/")
+        }
+        
     })
 })
 
