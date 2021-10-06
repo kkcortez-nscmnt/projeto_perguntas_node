@@ -20,10 +20,11 @@ app.use(express.json()) // ler dados de formulários enviados via json.
 
 
 app.get("/", (req, res)=>{
-    Pergunta.findAll({ raw: true}).then(perguntas =>{
-        
+    Pergunta.findAll({ raw: true, order:[
+        ['id', 'DESC']
+    ]}).then(perguntas =>{
         res.render("index",{
-            perguntas: perguntas // foi criado um json. Váriaveis dentro do HTML
+            perguntas: perguntas
         })
     })
 })
@@ -51,14 +52,34 @@ app.get("/pergunta/:id", (req, res) =>{
         where:{ id: id}
     }).then(pergunta =>{
         if(pergunta != undefined){
-            res.render("pergunta", {
-                pergunta: pergunta
-            })
+           Resposta.findAll({
+               where : {perguntaId: pergunta.id},
+               order:[
+                   ['id', 'DESC']
+               ]
+           }).then(respostas =>{
+               res.render("pergunta",{
+                   pergunta: pergunta,
+                   respostas: respostas
+
+               })
+           })
         }else{
             res.redirect("/")
         }
-        
+    })    
+})
+
+app.post("/responder",(req, res)=>{
+    var corpo= req.body.corpo
+    var perguntaId = req.body.pergunta
+    Resposta.create({
+        corpo: corpo,
+        perguntaId: perguntaId
+    }).then(()=>{
+        res.redirect("/pergunta/" + perguntaId)
     })
+
 })
 
 app.listen(666)

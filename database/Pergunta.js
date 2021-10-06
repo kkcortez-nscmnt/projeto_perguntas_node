@@ -12,8 +12,6 @@ const Pergunta = connection.define("pergunta", {
     }
 })
 
-Pergunta.sync({force:false}).then(()=>{
-    console.log("Tabela criada com sucesso")
-}) // caso não exista, cria e sincroniza a tabela criada
+Pergunta.sync({force:false}).then(()=>{}) // caso não exista, cria e sincroniza a tabela criada
 
 module.exports = Pergunta
